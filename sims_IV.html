@@ -139,39 +139,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>generate_dataset <span class="ot">&lt;-</span> \(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_sample_size =</span> <span class="dv">1000</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">sce =</span> <span class="dv">0</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_X_U =</span> <span class="dv">1</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_X_Z =</span> <span class="dv">1</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_Y_U =</span> <span class="dv">1</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_Y_X =</span> <span class="dv">1</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_X_U =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_X_Z =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_Y_U =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_Y_X =</span> <span class="cn">NULL</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>) {</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (sce <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    beta_X_Z <span class="ot">&lt;-</span> <span class="dv">1</span>; beta_X_U <span class="ot">&lt;-</span> <span class="dv">2</span>;</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_Z)) beta_X_Z <span class="ot">&lt;-</span> <span class="fl">1.5</span>; <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_U)) beta_X_U <span class="ot">&lt;-</span> <span class="dv">4</span>;</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (sce <span class="sc">==</span> <span class="dv">2</span>) {</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    beta_X_Z <span class="ot">=</span> <span class="dv">2</span>; beta_X_U <span class="ot">=</span> <span class="dv">2</span>;</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_Z)) beta_X_Z <span class="ot">&lt;-</span> <span class="dv">3</span>; <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_U)) beta_X_U <span class="ot">&lt;-</span> <span class="dv">4</span>;</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (sce <span class="sc">==</span> <span class="dv">3</span>) {</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    beta_X_Z <span class="ot">=</span> <span class="dv">3</span>; beta_X_U <span class="ot">=</span> <span class="dv">2</span>;</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_Z)) beta_X_Z <span class="ot">&lt;-</span> <span class="fl">4.5</span>; <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_U)) beta_X_U <span class="ot">&lt;-</span> <span class="dv">4</span>;</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (sce <span class="sc">==</span> <span class="dv">4</span>) {</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    beta_X_Z <span class="ot">=</span> <span class="dv">6</span>; beta_X_U <span class="ot">=</span> <span class="dv">2</span>;</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_Z)) beta_X_Z <span class="ot">&lt;-</span> <span class="dv">6</span>; <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_U)) beta_X_U <span class="ot">&lt;-</span> <span class="dv">4</span>;</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (sce <span class="sc">==</span> <span class="dv">5</span>) {</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    beta_X_Z <span class="ot">&lt;-</span> <span class="dv">8</span>;   beta_X_U <span class="ot">&lt;-</span> <span class="dv">2</span>;</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_Z)) beta_X_Z <span class="ot">&lt;-</span> <span class="dv">8</span>; <span class="cf">if</span>(<span class="fu">is.null</span>(beta_X_U)) beta_X_U <span class="ot">&lt;-</span> <span class="dv">4</span>;</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># independent variables</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  Z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sample_size, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="co"># 1:1</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  U <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sample_size, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dependent variables</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  expit <span class="ot">&lt;-</span> \(x) <span class="fu">exp</span>(x) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(x))</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    n_sample_size,</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span>,</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob =</span> <span class="fu">expit</span>(<span class="fu">qlogis</span>(<span class="fl">0.2</span>) <span class="sc">+</span> beta_X_U <span class="sc">*</span> U <span class="sc">+</span> beta_X_Z <span class="sc">*</span> Z)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    n_sample_size,</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span>,</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob =</span> <span class="fu">expit</span>(<span class="fu">qlogis</span>(<span class="fl">0.1</span>) <span class="sc">+</span> beta_Y_U <span class="sc">*</span> U <span class="sc">+</span> beta_Y_X <span class="sc">*</span> X)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">Z =</span> Z, <span class="at">U =</span> U, <span class="at">X =</span> X, <span class="at">Y =</span> Y)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(beta_Y_U)) beta_Y_U <span class="ot">&lt;-</span> <span class="fl">1.5</span>;</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(beta_Y_X)) beta_Y_X <span class="ot">&lt;-</span> <span class="dv">2</span>;</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># independent variables</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  Z <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sample_size, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.5</span>) <span class="co"># 1:1</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  U <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n_sample_size, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.5</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dependent variables</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  expit <span class="ot">&lt;-</span> \(x) <span class="fu">exp</span>(x) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(x))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    n_sample_size,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob =</span> <span class="fu">expit</span>(<span class="sc">-</span><span class="dv">5</span> <span class="sc">+</span> beta_X_U <span class="sc">*</span> U <span class="sc">+</span> beta_X_Z <span class="sc">*</span> Z)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    n_sample_size,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">prob =</span> <span class="fu">expit</span>(<span class="fu">qlogis</span>(<span class="fl">0.2</span>) <span class="sc">+</span> beta_Y_U <span class="sc">*</span> U <span class="sc">+</span> beta_Y_X <span class="sc">*</span> X)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Z =</span> Z, <span class="at">U =</span> U, <span class="at">X =</span> X, <span class="at">Y =</span> Y)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attr</span>(out, <span class="st">"true_betas"</span>) <span class="ot">&lt;-</span> <span class="fu">list</span>( <span class="at">beta_X_U =</span> beta_X_U,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_X_Z =</span> beta_X_Z,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_Y_U =</span> beta_Y_U,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">beta_Y_X =</span> beta_Y_X) </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="correlation-structure-and-strenght-of-instrument" class="level1">
@@ -182,6 +190,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>some random google image search result</figcaption>
 </figure>
 </div>
+<section id="code-to-generate-correlation-plots" class="level2">
+<h2 class="anchored" data-anchor-id="code-to-generate-correlation-plots">Code to generate correlation plots</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cor_hists <span class="ot">&lt;-</span> \(beta_X_Z, beta_X_U) {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  cors <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, \(rep) {</span>
@@ -216,80 +226,85 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  (p1 <span class="sc">|</span> p2) </span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Very weak instrument: rho_{X,Z} ≈ 0.2 | rho_{X,U} ≈ 0.44 </span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">1</span>, <span class="at">beta_X_U =</span> <span class="dv">2</span>)<span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Very weak instrument"</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sims_IV_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weak instrument: rho_{X,Z} ≈ 0.37 | rho_{X,U} ≈ 0.37 </span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">2</span>, <span class="at">beta_X_U =</span> <span class="dv">2</span>)<span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Weak instrument"</span></span>
+</section>
+<section id="histogram-plots-for-correlations" class="level2">
+<h2 class="anchored" data-anchor-id="histogram-plots-for-correlations">Histogram plots for correlations</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Very weak instrument: rho_{X,Z} ≈ 0.22 | rho_{X,U} ≈ 0.5 </span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="fl">1.5</span>, <span class="at">beta_X_U =</span> <span class="dv">4</span>)<span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Very weak instrument"</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sims_IV_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sims_IV_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Moderate instrument: rho_{X,Z} ≈ 0.51| rho_{X,U} ≈ 0.31</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">3</span>, <span class="at">beta_X_U =</span> <span class="dv">2</span>) <span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Moderate instrument"</span></span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Weak instrument: rho_{X,Z} ≈ 0.39 | rho_{X,U} ≈ 0.55</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">3</span>, <span class="at">beta_X_U =</span> <span class="dv">4</span>)<span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Weak instrument"</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sims_IV_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sims_IV_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Strong instrument: rho_{X,Z} ≈ 0.7 | rho_{X,U} ≈ 0.29</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">6</span>, <span class="at">beta_X_U =</span> <span class="dv">2</span>) <span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Strong instrument"</span></span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Moderate instrument: rho_{X,Z} ≈ 0.55| rho_{X,U} ≈ 0.31</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="fl">4.5</span>, <span class="at">beta_X_U =</span> <span class="dv">4</span>) <span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Moderate instrument"</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sims_IV_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sims_IV_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Very Strong instrument: rho_{X,Z} ≈ 0.84 | rho_{X,U} ≈ 0.15</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">8</span>, <span class="at">beta_X_U =</span> <span class="dv">2</span>)<span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Very Strong instrument"</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Strong instrument: rho_{X,Z} ≈ 0.72 | rho_{X,U} ≈ 0.26</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">6</span>, <span class="at">beta_X_U =</span> <span class="dv">4</span>) <span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Strong instrument"</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sims_IV_files/figure-html/unnamed-chunk-4-5.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sims_IV_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlations of Y with U and X with U</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  cors <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, \(rep) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    dat <span class="ot">&lt;-</span> <span class="fu">generate_dataset</span>(<span class="at">sce =</span> <span class="dv">5</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">with</span>(dat, <span class="fu">c</span>(<span class="fu">cor</span>(Y, X), <span class="fu">cor</span>(Y, U)))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">cor_YX =</span> cors[<span class="dv">1</span>,], <span class="at">cor_YU =</span> cors[<span class="dv">2</span>,])</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> cor_YU)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>cor_YU), <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> cor_YX)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>cor_YX), <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  p1 <span class="sc">|</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Very Strong instrument: rho_{X,Z} ≈ 0.84 | rho_{X,U} ≈ 0.15</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cor_hists</span>(<span class="at">beta_X_Z =</span> <span class="dv">8</span>, <span class="at">beta_X_U =</span> <span class="dv">4</span>)<span class="sc">+</span>   <span class="fu">plot_annotation</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Very Strong instrument"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sims_IV_files/figure-html/unnamed-chunk-4-6.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sims_IV_files/figure-html/unnamed-chunk-5-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlations of Y with U and X with U</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  cors <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, \(rep) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    dat <span class="ot">&lt;-</span> <span class="fu">generate_dataset</span>(<span class="at">sce =</span> <span class="dv">5</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">with</span>(dat, <span class="fu">c</span>(<span class="fu">cor</span>(Y, X), <span class="fu">cor</span>(Y, U)))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">cor_YX =</span> cors[<span class="dv">1</span>,], <span class="at">cor_YU =</span> cors[<span class="dv">2</span>,])</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> cor_YU)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>cor_YU), <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> cor_YX)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(df<span class="sc">$</span>cor_YX), <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  p1 <span class="sc">|</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sims_IV_files/figure-html/unnamed-chunk-5-6.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
 </section>
 <section id="fit" class="level1">
 <h1>Fit:</h1>
@@ -299,12 +314,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>GMM []</li>
 <li>LATE estimator expect similar results from 2sLS | GMM | LATE []</li>
 </ul>
-<section id="ols" class="level2">
-<h2 class="anchored" data-anchor-id="ols">OLS</h2>
+<section id="glm-1-stage-vs-ivglm-2-stage" class="level2">
+<h2 class="anchored" data-anchor-id="glm-1-stage-vs-ivglm-2-stage">glm (1 stage) vs ivglm (2 stage)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">generate_dataset</span>(<span class="at">n_sample_size =</span> <span class="dv">1000</span>, <span class="at">sce =</span> <span class="dv">5</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> X, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">generate_dataset</span>(<span class="at">n_sample_size =</span> <span class="dv">1000</span>, <span class="at">sce =</span> <span class="dv">5</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> X, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -312,28 +326,28 @@ glm(formula = Y ~ X, family = binomial(), data = dat)
 
 Coefficients:
             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)  -2.0314     0.1880 -10.805  &lt; 2e-16 ***
-X             1.4642     0.2033   7.202 5.92e-13 ***
+(Intercept)  -0.6652     0.1022  -6.509 7.55e-11 ***
+X             2.0801     0.1468  14.173  &lt; 2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 1211.4  on 999  degrees of freedom
-Residual deviance: 1145.7  on 998  degrees of freedom
-AIC: 1149.7
+    Null deviance: 1341.0  on 999  degrees of freedom
+Residual deviance: 1113.4  on 998  degrees of freedom
+AIC: 1117.4
 
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fit_ts <span class="ot">&lt;-</span> <span class="fu">ivglm</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">estmethod =</span> <span class="st">"ts"</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> <span class="st">"X"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Y =</span> <span class="st">"Y"</span>,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitX.LZ =</span> <span class="fu">glm</span>(X <span class="sc">~</span> Z, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitY.LX =</span> <span class="fu">glm</span>(Y <span class="sc">~</span> X, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit_ts <span class="ot">&lt;-</span> <span class="fu">ivglm</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">estmethod =</span> <span class="st">"ts"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">X =</span> <span class="st">"X"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Y =</span> <span class="st">"Y"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitX.LZ =</span> <span class="fu">glm</span>(X <span class="sc">~</span> Z, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitY.LX =</span> <span class="fu">glm</span>(Y <span class="sc">~</span> X, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_ts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:  
@@ -343,19 +357,101 @@ ivglm(estmethod = "ts", X = "X", Y = "Y", fitX.LZ = glm(X ~ Z,
 
 Coefficients: 
             Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept)  -1.3923     0.1923  -7.240  4.5e-13 ***
-X             0.7022     0.2448   2.868  0.00413 ** 
+(Intercept)  -0.5831     0.1008  -5.786  7.2e-09 ***
+X             1.8873     0.1617  11.671  &lt; 2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(lmtest)</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#library(sandwich)</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(fit1 &lt;- glm(X ~ Z, family = binomial(), data = dat))</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#dat$Xhat &lt;- predict(fit1, type = "response")</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_2sps &lt;- glm(Y ~ Xhat, family = binomial(), data = dat)</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Robust SEs</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#coeftest(fit2_2sps, vcov = vcovHC(fit2_2sps, type = "HC"))</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(fit2_2sps)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(lmtest)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#library(sandwich)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(fit1 &lt;- glm(X ~ Z, family = binomial(), data = dat))</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#dat$Xhat &lt;- predict(fit1, type = "response")</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#fit2_2sps &lt;- glm(Y ~ Xhat, family = binomial(), data = dat)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Robust SEs</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#coeftest(fit2_2sps, vcov = vcovHC(fit2_2sps, type = "HC"))</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(fit2_2sps)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="iv---g-estimation" class="level1">
+<h1>IV - G estimation</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit_g <span class="ot">&lt;-</span> <span class="fu">ivglm</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">estmethod =</span> <span class="st">"g"</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">X   =</span> <span class="st">"X"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Y   =</span> <span class="st">"Y"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">link =</span> <span class="st">"logit"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> <span class="dv">1</span>,                                    </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitZ.L =</span> <span class="fu">glm</span>(Z <span class="sc">~</span> <span class="dv">1</span>, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">fitY.LZX =</span> <span class="fu">glm</span>(Y <span class="sc">~</span> Z <span class="sc">+</span> X <span class="sc">+</span> Z<span class="sc">*</span>X, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat),</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">vcov.fit=</span><span class="cn">TRUE</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:  
+ivglm(estmethod = "g", X = "X", Y = "Y", fitZ.L = glm(Z ~ 1, 
+    family = binomial(), data = dat), fitY.LZX = glm(Y ~ Z + 
+    X + Z * X, family = binomial(), data = dat), data = dat, 
+    formula = ~1, link = "logit", vcov.fit = TRUE)
+
+Coefficients: 
+  Estimate Std. Error z value Pr(&gt;|z|)    
+X   1.8226     0.1807   10.09   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<section id="gmm" class="level2">
+<h2 class="anchored" data-anchor-id="gmm">GMM</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- starting values from naive logit (helps convergence)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="fu">coef</span>(<span class="fu">glm</span>(Y <span class="sc">~</span> X, <span class="at">family =</span> <span class="fu">binomial</span>(), <span class="at">data =</span> dat))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(start))) start <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">qlogis</span>(<span class="fu">mean</span>(dat<span class="sc">$</span>Y)), <span class="dv">0</span>)  <span class="co"># fallback</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>expit <span class="ot">&lt;-</span> \(x) <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(<span class="sc">-</span>x))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>moments_logit_iv <span class="ot">&lt;-</span> <span class="cf">function</span>(theta, x) {</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  alpha <span class="ot">&lt;-</span> theta[<span class="dv">1</span>]; psi <span class="ot">&lt;-</span> theta[<span class="dv">2</span>]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  mu <span class="ot">&lt;-</span> <span class="fu">expit</span>(alpha <span class="sc">+</span> psi <span class="sc">*</span> x<span class="sc">$</span>X)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  resid <span class="ot">&lt;-</span> x<span class="sc">$</span>Y <span class="sc">-</span> mu</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(resid, resid <span class="sc">*</span> x<span class="sc">$</span>Z)  <span class="co"># moments for intercept and slope</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># --- two-step efficient GMM (identifying with 2 moments for 2 params)</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>fit_gmm <span class="ot">&lt;-</span> <span class="fu">gmm</span>(moments_logit_iv, <span class="at">x =</span> dat, <span class="at">t0 =</span> start, <span class="at">type =</span> <span class="st">"twoStep"</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_gmm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+gmm(g = moments_logit_iv, x = dat, t0 = start, type = "twoStep")
+
+
+Method:  twoStep 
+
+Kernel:  Quadratic Spectral
+
+Coefficients:
+             Estimate     Std. Error   t value      Pr(&gt;|t|)   
+(Intercept)  -5.6895e-01   1.0622e-01  -5.3563e+00   8.4964e-08
+X             1.8832e+00   1.6415e-01   1.1472e+01   1.8266e-30
+
+J-Test: degrees of freedom is 0 
+                J-test                P-value             
+Test E(g)=0:    2.67965768945602e-10  *******             
+
+#############
+Information related to the numerical optimization
+Convergence code =  0 
+Function eval. =  67 
+Gradian eval. =  NA </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit_gmm<span class="sc">$</span>vcov</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            (Intercept)           X
+(Intercept)  0.01128310 -0.01321511
+X           -0.01321511  0.02694686</code></pre>
+</div>
 </div>
 </section>
 <section id="estimate" class="level2">
@@ -373,8 +469,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="todo" class="level2">
 <h2 class="anchored" data-anchor-id="todo">TODO:</h2>
 <ul>
-<li>[] READ about rigorous definition of instrument strength</li>
-<li>[] Do not say OLS; we use MLE for logsitic: in this case Iteratively Reweighted Least Squares, which is a form of Newton–Raphson algorithm.</li>
+<li>[] READ about rigorous definition of instrument’s strength</li>
+<li>[] Do not say OLS; we use MLE for logsitic: in this case Iteratively Reweighted Least Squares, which is a form of Newton–Raphson algorithm; IV fit is still 2 stage regression, just not OLS.</li>
 </ul>
 </section>
 </section>
