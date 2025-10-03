@@ -1,3 +1,7 @@
+#! /nfs/sw/eb/software/R/4.4.3-gfbf-2023b/bin/Rscript
+#SBATCH -c 21
+#SBATCH -t 01:00:00
+#SBATCH --mem 30000
 
 library(parallel)
 library(ivtools)

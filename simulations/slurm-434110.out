@@ -1,0 +1,22 @@
+Type 'citation("pROC")' for a citation.
+
+Attaching package: ‘pROC’
+
+The following objects are masked from ‘package:stats’:
+
+    cov, smooth, var
+
+Loading required package: sandwich
+
+Attaching package: ‘sandwich’
+
+The following object is masked from ‘package:ivtools’:
+
+    estfun
+
+Warning message:
+In mclapply(seq_len(nrow(grid)), function(i) sim_run(grid$n[i],  :
+  30 function calls resulted in an error
+Error in eval(predvars, data, env) : object 'bias_rel_pct' not found
+Calls: aggregate ... <Anonymous> -> model.frame.default -> eval -> eval -> cbind
+Execution halted
