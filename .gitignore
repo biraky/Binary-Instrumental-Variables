@@ -1,3 +1,5 @@
+./literature/*
+literature/*
 # History files
 .Rhistory
 .Rapp.history

@@ -1,0 +1,221 @@
+---
+title: "Simulations | Instrumental Variables"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    code_folding: show
+date: "2025-10-02"
+---
+
+```{r, echo = FALSE, include = FALSE}
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(ivtools)
+library(lmtest)
+```
+
+# Simulation Strategy
+
+-   Instrumental Variable Z: Binary
+
+-   Exposure X: Binary
+
+-   Confounder U: Binary = NOT correlated with X and Y (Important) \| it is independent of X and Y \| X and Y are dependent on U
+
+-   Outcome Y: Binary
+
+```{mermaid}
+flowchart LR
+  Z((Z)) ---> X((X))
+  X --> Y((Y))
+  U((U)) --> X
+  U --> Y
+```
+
+# Code to Generate the Data
+
+```{r}
+generate_dataset <- \(
+  n_sample_size = 1000,
+  sce = 0,
+  beta_X_U = NULL,
+  beta_X_Z = NULL,
+  beta_Y_U = NULL,
+  beta_Y_X = NULL
+) {
+  if (sce == 1) {
+    if(!is.null(beta_X_Z)) beta_X_Z <- 1; if(!is.null(beta_X_U)) beta_X_U <- 2;
+  } else if (sce == 2) {
+    if(!is.null(beta_X_Z)) beta_X_Z <- 2; if(!is.null(beta_X_U)) beta_X_U <- 2;
+  } else if (sce == 3) {
+    if(!is.null(beta_X_Z)) beta_X_Z <- 3; if(!is.null(beta_X_U)) beta_X_U <- 2;
+  } else if (sce == 4) {
+    if(!is.null(beta_X_Z)) beta_X_Z <- 6; if(!is.null(beta_X_U)) beta_X_U <- 2;
+  } else if (sce == 5) {
+    if(!is.null(beta_X_Z)) beta_X_Z <- 8; if(!is.null(beta_X_U)) beta_X_U <- 2;
+  }
+  if(is.null(beta_Y_U)) beta_Y_U <- 1;
+  if(is.null(beta_Y_X)) beta_Y_X <- 1;
+
+  # independent variables
+  Z <- rbinom(n_sample_size, size = 1, prob = 0.5) # 1:1
+  U <- rbinom(n_sample_size, size = 1, prob = 0.5)
+  # dependent variables
+  expit <- \(x) exp(x) / (1 + exp(x))
+  X <- rbinom(
+    n_sample_size,
+    size = 1,
+    prob = expit(qlogis(0.2) + beta_X_U * U + beta_X_Z * Z)
+  )
+  Y <- rbinom(
+    n_sample_size,
+    size = 1,
+    prob = expit(qlogis(0.1) + beta_Y_U * U + beta_Y_X * X)
+  )
+  data.frame(Z = Z, U = U, X = X, Y = Y)
+}
+```
+
+# Correlation structure and strenght of instrument
+
+![some random google image search result](https://i0.wp.com/itfeature.com/wp-content/uploads/2024/05/Coefficient-of-Correlation-range.jpg)
+
+## Code to generate correlation plots
+```{r}
+cor_hists <- \(beta_X_Z, beta_X_U) {
+  cors <- sapply(1:100, \(rep) {
+    dat <- generate_dataset(beta_X_Z = beta_X_Z, beta_X_U = beta_X_U)
+    with(dat, c(cor(X, Z), cor(X, U)))
+  })
+  
+  mean_XZ <- mean(cors[1, ])
+  mean_XU <- mean(cors[2, ])
+
+  df <- data.frame(
+    cor_XZ = cors[1, ],
+    cor_XU = cors[2, ]
+  )
+
+  p1 <- ggplot(df, aes(x = cor_XZ)) +
+    geom_histogram(bins = 10, fill = "skyblue", colour = "black") +
+    geom_vline(xintercept = mean_XZ, colour = "darkblue", linewidth = 1) +
+    annotate("label", x = mean_XZ, y = Inf,
+             label = sprintf("Mean Cor(X,Z) = %.2f", mean_XZ),
+             vjust = 7, colour = "darkblue", fill = "white", size = 5) +
+    labs(title = "Distribution of cor(X, Z)", x = "cor(X, Z)", y = "Count") +
+    theme_minimal()
+
+  p2 <- ggplot(df, aes(x = cor_XU)) +
+    geom_histogram(bins = 10, fill = "skyblue", colour = "black") +
+    geom_vline(xintercept = mean_XU, colour = "red", linewidth = 1) +
+    annotate("label", x = mean_XU, y = Inf,
+             label = sprintf("Mean Cor(X,U) = %.2f", mean_XU),
+             vjust = 7, colour = "red", fill = "white", size = 5) +
+    labs(title = "Distribution of cor(X, U)", x = "cor(X, U)", y = "Count") +
+    theme_minimal()
+
+  (p1 | p2) 
+}
+```
+## Histogram plots for correlations
+```{r}
+# Very weak instrument: rho_{X,Z} ≈ 0.2 | rho_{X,U} ≈ 0.44 
+cor_hists(beta_X_Z = 1, beta_X_U = 2)+   plot_annotation(
+    title = "Very weak instrument"
+  )
+
+# Weak instrument: rho_{X,Z} ≈ 0.37 | rho_{X,U} ≈ 0.37 
+cor_hists(beta_X_Z = 2, beta_X_U = 2)+   plot_annotation(
+    title = "Weak instrument"
+  )
+
+# Moderate instrument: rho_{X,Z} ≈ 0.51| rho_{X,U} ≈ 0.31
+cor_hists(beta_X_Z = 3, beta_X_U = 2) +   plot_annotation(
+    title = "Moderate instrument"
+  )
+
+# Strong instrument: rho_{X,Z} ≈ 0.7 | rho_{X,U} ≈ 0.29
+cor_hists(beta_X_Z = 6, beta_X_U = 2) +   plot_annotation(
+    title = "Strong instrument"
+  )
+
+# Very Strong instrument: rho_{X,Z} ≈ 0.84 | rho_{X,U} ≈ 0.15
+cor_hists(beta_X_Z = 8, beta_X_U = 2)+   plot_annotation(
+    title = "Very Strong instrument"
+  )
+
+# Correlations of Y with U and X with U
+  cors <- sapply(1:100, \(rep) {
+    dat <- generate_dataset(sce = 5)
+    with(dat, c(cor(Y, X), cor(Y, U)))
+  })
+  df <- data.frame(cor_YX = cors[1,], cor_YU = cors[2,])
+  p1 <- ggplot(df, aes(x = cor_YU)) + geom_histogram(bins = 10) + geom_vline(xintercept = mean(df$cor_YU), colour = "red", linewidth = 1)
+  p2 <- ggplot(df, aes(x = cor_YX)) + geom_histogram(bins = 10) + geom_vline(xintercept = mean(df$cor_YX), colour = "red", linewidth = 1)
+  p1 | p2
+```
+
+# Fit:
+
+-   OLS [X]
+-   2sLS [X]
+-   GMM []
+-   LATE estimator expect similar results from 2sLS \| GMM \| LATE []
+
+## glm (1 stage) vs ivglm (2 stage)
+
+```{r}
+dat <- generate_dataset(n_sample_size = 1000, sce = 5, beta_X_U = 0, beta_Y_U = 0,  beta_X_Z = 0)
+
+summary(glm(Y ~ X, family = binomial(), data = dat))
+
+fit_ts <- ivglm(
+  estmethod = "ts",
+  X = "X",
+  Y = "Y",
+  fitX.LZ = glm(X ~ Z, family = binomial(), data = dat),
+  fitY.LX = glm(Y ~ X, family = binomial(), data = dat),
+  data = dat
+)
+summary(fit_ts)
+#library(lmtest)
+#library(sandwich)
+#summary(fit1 <- glm(X ~ Z, family = binomial(), data = dat))
+#dat$Xhat <- predict(fit1, type = "response")
+#fit2_2sps <- glm(Y ~ Xhat, family = binomial(), data = dat)
+# Robust SEs
+#coeftest(fit2_2sps, vcov = vcovHC(fit2_2sps, type = "HC"))
+#summary(fit2_2sps)
+```
+
+```{r}
+
+fit_ts <- ivglm(
+  estmethod = "ts",
+  X = "X",
+  Y = "Y",
+  fitX.LZ = glm(X ~ Z, family = binomial(), data = dat),
+  fitY.LX = glm(Y ~ X, family = binomial(), data = dat),
+  data = dat
+)
+summary(fit_ts)
+```
+
+
+
+## Estimate:
+
+Bias in covariate effects
+
+RMSE \| R\^2
+
+## Vary:
+
+-   sample sizes: n = 50, 100, 500, 1000, 5000, 10000
+-   Cor(Z,X) = Very weak:: rho = 0.25 \| Weak:: rho = 0.35 \| Moderate:: rho = 0.5 \| Strong:: rho = 0.7 \| Very strong:: rho = 0.9
+
+## TODO:
+-   \[\] READ about rigorous definition of instrument's strength
+- [] Do not say OLS; we use MLE for logsitic: in this case Iteratively Reweighted Least Squares, which is a form of Newton–Raphson algorithm; IV fit is still 2 stage regression, just not OLS.
