@@ -14,6 +14,7 @@ library(dplyr)
 library(patchwork)
 library(ivtools)
 library(lmtest)
+library(gmm)
 ```
 
 # Simulation Strategy
@@ -46,18 +47,18 @@ generate_dataset <- \(
   beta_Y_X = NULL
 ) {
   if (sce == 1) {
-    if(!is.null(beta_X_Z)) beta_X_Z <- 1; if(!is.null(beta_X_U)) beta_X_U <- 2;
+    if(is.null(beta_X_Z)) beta_X_Z <- 1.5; if(is.null(beta_X_U)) beta_X_U <- 4;
   } else if (sce == 2) {
-    if(!is.null(beta_X_Z)) beta_X_Z <- 2; if(!is.null(beta_X_U)) beta_X_U <- 2;
+    if(is.null(beta_X_Z)) beta_X_Z <- 3; if(is.null(beta_X_U)) beta_X_U <- 4;
   } else if (sce == 3) {
-    if(!is.null(beta_X_Z)) beta_X_Z <- 3; if(!is.null(beta_X_U)) beta_X_U <- 2;
+    if(is.null(beta_X_Z)) beta_X_Z <- 4.5; if(is.null(beta_X_U)) beta_X_U <- 4;
   } else if (sce == 4) {
-    if(!is.null(beta_X_Z)) beta_X_Z <- 6; if(!is.null(beta_X_U)) beta_X_U <- 2;
+    if(is.null(beta_X_Z)) beta_X_Z <- 6; if(is.null(beta_X_U)) beta_X_U <- 4;
   } else if (sce == 5) {
-    if(!is.null(beta_X_Z)) beta_X_Z <- 8; if(!is.null(beta_X_U)) beta_X_U <- 2;
+    if(is.null(beta_X_Z)) beta_X_Z <- 8; if(is.null(beta_X_U)) beta_X_U <- 4;
   }
-  if(is.null(beta_Y_U)) beta_Y_U <- 1;
-  if(is.null(beta_Y_X)) beta_Y_X <- 1;
+  if(is.null(beta_Y_U)) beta_Y_U <- 1.5;
+  if(is.null(beta_Y_X)) beta_Y_X <- 2;
 
   # independent variables
   Z <- rbinom(n_sample_size, size = 1, prob = 0.5) # 1:1
@@ -67,14 +68,19 @@ generate_dataset <- \(
   X <- rbinom(
     n_sample_size,
     size = 1,
-    prob = expit(qlogis(0.2) + beta_X_U * U + beta_X_Z * Z)
+    prob = expit(-5 + beta_X_U * U + beta_X_Z * Z)
   )
   Y <- rbinom(
     n_sample_size,
     size = 1,
-    prob = expit(qlogis(0.1) + beta_Y_U * U + beta_Y_X * X)
+    prob = expit(qlogis(0.2) + beta_Y_U * U + beta_Y_X * X)
   )
-  data.frame(Z = Z, U = U, X = X, Y = Y)
+  out <- data.frame(Z = Z, U = U, X = X, Y = Y)
+  attr(out, "true_betas") <- list( beta_X_U = beta_X_U,
+  beta_X_Z = beta_X_Z,
+  beta_Y_U = beta_Y_U,
+  beta_Y_X = beta_Y_X) 
+  out
 }
 ```
 
@@ -121,28 +127,28 @@ cor_hists <- \(beta_X_Z, beta_X_U) {
 ```
 ## Histogram plots for correlations
 ```{r}
-# Very weak instrument: rho_{X,Z} ≈ 0.2 | rho_{X,U} ≈ 0.44 
-cor_hists(beta_X_Z = 1, beta_X_U = 2)+   plot_annotation(
+# Very weak instrument: rho_{X,Z} ≈ 0.22 | rho_{X,U} ≈ 0.5 
+cor_hists(beta_X_Z = 1.5, beta_X_U = 4)+   plot_annotation(
     title = "Very weak instrument"
   )
 
-# Weak instrument: rho_{X,Z} ≈ 0.37 | rho_{X,U} ≈ 0.37 
-cor_hists(beta_X_Z = 2, beta_X_U = 2)+   plot_annotation(
+# Weak instrument: rho_{X,Z} ≈ 0.39 | rho_{X,U} ≈ 0.55
+cor_hists(beta_X_Z = 3, beta_X_U = 4)+   plot_annotation(
     title = "Weak instrument"
   )
 
-# Moderate instrument: rho_{X,Z} ≈ 0.51| rho_{X,U} ≈ 0.31
-cor_hists(beta_X_Z = 3, beta_X_U = 2) +   plot_annotation(
+# Moderate instrument: rho_{X,Z} ≈ 0.55| rho_{X,U} ≈ 0.31
+cor_hists(beta_X_Z = 4.5, beta_X_U = 4) +   plot_annotation(
     title = "Moderate instrument"
   )
 
-# Strong instrument: rho_{X,Z} ≈ 0.7 | rho_{X,U} ≈ 0.29
-cor_hists(beta_X_Z = 6, beta_X_U = 2) +   plot_annotation(
+# Strong instrument: rho_{X,Z} ≈ 0.72 | rho_{X,U} ≈ 0.26
+cor_hists(beta_X_Z = 6, beta_X_U = 4) +   plot_annotation(
     title = "Strong instrument"
   )
 
 # Very Strong instrument: rho_{X,Z} ≈ 0.84 | rho_{X,U} ≈ 0.15
-cor_hists(beta_X_Z = 8, beta_X_U = 2)+   plot_annotation(
+cor_hists(beta_X_Z = 8, beta_X_U = 4)+   plot_annotation(
     title = "Very Strong instrument"
   )
 
@@ -167,8 +173,7 @@ cor_hists(beta_X_Z = 8, beta_X_U = 2)+   plot_annotation(
 ## glm (1 stage) vs ivglm (2 stage)
 
 ```{r}
-dat <- generate_dataset(n_sample_size = 1000, sce = 5, beta_X_U = 0, beta_Y_U = 0,  beta_X_Z = 0)
-
+dat <- generate_dataset(n_sample_size = 1000, sce = 5)
 summary(glm(Y ~ X, family = binomial(), data = dat))
 
 fit_ts <- ivglm(
@@ -189,22 +194,42 @@ summary(fit_ts)
 #coeftest(fit2_2sps, vcov = vcovHC(fit2_2sps, type = "HC"))
 #summary(fit2_2sps)
 ```
-
+# IV - G estimation
 ```{r}
-
-fit_ts <- ivglm(
-  estmethod = "ts",
-  X = "X",
-  Y = "Y",
-  fitX.LZ = glm(X ~ Z, family = binomial(), data = dat),
-  fitY.LX = glm(Y ~ X, family = binomial(), data = dat),
-  data = dat
+fit_g <- ivglm(
+  estmethod = "g",
+  X   = "X",
+  Y   = "Y",
+  data = dat,
+  link = "logit",
+  formula = ~ 1,                                    
+  fitZ.L = glm(Z ~ 1, family = binomial(), data = dat),
+  fitY.LZX = glm(Y ~ Z + X + Z*X, family = binomial(), data = dat),
+  vcov.fit=TRUE
 )
-summary(fit_ts)
+
+summary(fit_g)
 ```
 
 
+## GMM 
+```{r}
+# --- starting values from naive logit (helps convergence)
+start <- coef(glm(Y ~ X, family = binomial(), data = dat))
+if (any(is.na(start))) start <- c(qlogis(mean(dat$Y)), 0)  # fallback
+expit <- \(x) 1/(1 + exp(-x))
+moments_logit_iv <- function(theta, x) {
+  alpha <- theta[1]; psi <- theta[2]
+  mu <- expit(alpha + psi * x$X)
+  resid <- x$Y - mu
+  cbind(resid, resid * x$Z)  # moments for intercept and slope
+}
 
+# --- two-step efficient GMM (identifying with 2 moments for 2 params)
+fit_gmm <- gmm(moments_logit_iv, x = dat, t0 = start, type = "twoStep")
+summary(fit_gmm)
+fit_gmm$vcov
+```
 ## Estimate:
 
 Bias in covariate effects
